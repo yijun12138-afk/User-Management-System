@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户管理系统</title>
+    <link rel="stylesheet" href="/JS-Vue/try/bootstrap/bootstrap.min.css" />
+    <style>
+      .user-card {
+        transition: all 0.3s ease;
+      }
+      .user-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 导航栏 -->
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <!-- 标题 -->
+          <div class="text-center mb-4">
+            <h1 class="text-primary">👥 用户管理系统</h1>
+            <p class="text-muted">试试</p>
+          </div>
+
+          <!-- 添加用户表单 -->
+          <div class="card shadow-sm mb-4">
+            <div class="card-body">
+              <h5 class="card-title">添加新用户</h5>
+              <form id="userForm" class="row g-3">
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nameInput"
+                    placeholder="输入姓名"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="emailInput"
+                    placeholder="输入邮箱"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <button type="submit" class="btn btn-primary w-100">
+                    添加用户
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- 操作按钮区域 -->
+          <div class="d-flex justify-content-between mb-3">
+            <button id="loadUsersBtn" class="btn btn-success">
+              🔄 加载用户列表
+            </button>
+            <span class="badge bg-secondary align-self-center" id="userCount"
+              >0 个用户</span
+            >
+          </div>
+
+          <!-- 加载状态 -->
+          <div id="loading" class="text-center d-none">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">加载中...</span>
+            </div>
+            <p class="mt-2 text-muted">正在加载用户数据...</p>
+          </div>
+
+          <!-- 用户列表区域 -->
+          <div id="userListContainer" class="row">
+            <!-- 用户卡片会动态插入到这里 -->
+          </div>
+
+          <!-- 空状态提示 -->
+          <div id="emptyState" class="text-center d-none">
+            <div class="alert alert-info">
+              <h4>暂无用户数据</h4>
+              <p>点击"加载用户列表"按钮来获取用户数据</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 引入JS库 -->
+    <script src="/JS-Vue/try/bootstrap/bootstrap.min.js"></script>
+    <!-- 引入Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- 我们的业务逻辑 -->
+    <script src="/JS-Vue/try/js.js">
+      // 这里我们将在下一课添加JavaScript代码
+      console.log('用户管理系统已加载');
+    </script>
+  </body>
+</html>
