@@ -1,7 +1,7 @@
 // 1. 定义API基础URL
 const API_BASE = "https://jsonplaceholder.typicode.com";
 let users = [];
-
+ 
 // 2. 创建加载用户列表的函数
 async function loadUsers() {
   document.getElementById("loadUsersBtn").textContent = "加载中...";
