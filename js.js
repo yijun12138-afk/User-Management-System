@@ -1,7 +1,7 @@
 // 1. 定义API基础URL
 const API_BASE = "https://jsonplaceholder.typicode.com";
 let users = [];
- 
+
 // 2. 创建加载用户列表的函数
 async function loadUsers() {
   document.getElementById("loadUsersBtn").textContent = "加载中...";
@@ -22,10 +22,14 @@ async function loadUsers() {
 
 function renderUsers() {
   const container = document.getElementById("userListContainer");
+  const userCountElement = document.getElementById("userCount");
+  
   if (users.length === 0) {
     container.innerHTML = "<p>暂无用户数据</p>";
+    userCountElement.textContent = "0 个用户";
     return;
   }
+  
   let html = "";
   for (let i = 0; i < users.length; i++) {
     const user = users[i];
@@ -34,15 +38,22 @@ function renderUsers() {
                 <div class="card-body">
                     <h5>${user.name}</h5>
                     <p>📧 ${user.email}</p>
-                     <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">
-              删除
-            </button>
+                    <div>
+                      <button class="btn btn-primary btn-sm me-2" onclick="openEditModal(${user.id})">
+                        编辑
+                      </button>
+                      <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">
+                        删除
+                      </button>
+                    </div>
                 </div>
             </div>`;
   }
   container.innerHTML = html;
+  
+  // 更新用户计数
+  userCountElement.textContent = `${users.length} 个用户`;
 }
-
 document.getElementById("loadUsersBtn").addEventListener("click", loadUsers);
 
 // 添加用户
@@ -141,3 +152,92 @@ async function deleteUser(userId) {
     alert("用户删除失败");
   }
 }
+
+// 打开编辑模态框并填充数据
+function openEditModal(userId) {
+  // 找到要编辑的用户
+  const user = users.find((u) => u.id === userId);
+  if (!user) {
+    alert("用户不存在");
+    return;
+  }
+
+  // 填充表单数据
+  document.getElementById("editUserId").value = user.id;
+  document.getElementById("editName").value = user.name;
+  document.getElementById("editEmail").value = user.email;
+
+  // 显示模态框
+  const editModal = new bootstrap.Modal(
+    document.getElementById("editUserModal")
+  );
+  editModal.show();
+}
+
+// 保存编辑的用户信息
+async function saveEditUser() {
+  const userId = parseInt(document.getElementById("editUserId").value);
+  const name = document.getElementById("editName").value.trim();
+  const email = document.getElementById("editEmail").value.trim();
+
+  // 验证输入
+  if (!name || !email) {
+    alert("请填写姓名和邮箱");
+    return;
+  }
+
+  const saveButton = document.getElementById("saveEditBtn");
+
+  try {
+    // 显示加载状态
+    saveButton.textContent = "保存中...";
+    saveButton.disabled = true;
+
+    // 调用API更新用户
+    const updatedUser = await updateUserToAPI(userId, name, email);
+
+    // 更新本地数据
+    const userIndex = users.findIndex((u) => u.id === userId);
+    if (userIndex !== -1) {
+      users[userIndex] = updatedUser;
+    }
+
+    // 重新渲染列表
+    renderUsers();
+
+    // 关闭模态框
+    const editModal = bootstrap.Modal.getInstance(
+      document.getElementById("editUserModal")
+    );
+    editModal.hide();
+
+    alert("用户信息更新成功！");
+  } catch (error) {
+    console.error("更新用户失败:", error);
+    alert("更新用户失败，请重试");
+  } finally {
+    // 恢复按钮状态
+    saveButton.textContent = "保存修改";
+    saveButton.disabled = false;
+  }
+}
+
+// 调用API更新用户的函数
+async function updateUserToAPI(userId, name, email) {
+  const updateData = {
+    name: name,
+    email: email,
+  };
+
+  // 发送PUT请求更新用户
+  const response = await axios.put(`${API_BASE}/users/${userId}`, updateData);
+  console.log("更新API响应", response.data);
+
+  return {
+    id: userId,
+    name: response.data.name || name,
+    email: response.data.email || email,
+  };
+}
+// 为保存按钮添加事件监听
+document.getElementById("saveEditBtn").addEventListener("click", saveEditUser);

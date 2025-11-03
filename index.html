@@ -16,6 +16,56 @@
     </style>
   </head>
   <body>
+    <!-- 编辑用户模态框 -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">编辑用户信息</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editUserForm">
+              <input type="hidden" id="editUserId" />
+              <div class="mb-3">
+                <label for="editName" class="form-label">姓名</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editEmail" class="form-label">邮箱</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editEmail"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              取消
+            </button>
+            <button type="button" class="btn btn-primary" id="saveEditBtn">
+              保存修改
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 导航栏 -->
     <div class="container mt-5">
       <div class="row justify-content-center">
@@ -74,13 +124,11 @@
 
           <!-- 加载状态 -->
           <div id="loading" class="text-center d-none">
-            <div class="spinner-border text-primary" role="status">
-            </div>
+            <div class="spinner-border text-primary" role="status"></div>
           </div>
 
           <!-- 用户列表区域 -->
           <div id="userListContainer" class="row">
-            
             <!-- 用户卡片会动态插入到这里 -->
           </div>
 
@@ -93,7 +141,6 @@
         </div>
       </div>
     </div>
-    
 
     <!-- 引入JS库 -->
     <script src="/JS-Vue/try/bootstrap/bootstrap.min.js"></script>
